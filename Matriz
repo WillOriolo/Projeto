@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    char **JOGO;
+    int F, F2;
+    JOGO = (char **) malloc (11 * sizeof(char*));
+    for (F=0; F<11; F++)
+    JOGO[F]= (char *) malloc (11 * sizeof(char));
+    
+    for(F=0; F<11; F++)
+    {
+        for (F2=0; F2<11; F2++)
+        {
+            printf("[%c] ", JOGO[F][F]);}
+    printf("\n");}
+
+    return 0;
+}
