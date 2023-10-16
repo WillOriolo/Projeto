@@ -1,20 +1,76 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+
+#define TAMANHO_MATRIZ 3
+
+void inicializarMatriz(char ***matriz) {
+    *matriz = (char **)malloc(TAMANHO_MATRIZ * sizeof(char *));
+    for (int i = 0; i < TAMANHO_MATRIZ; i++) {
+        (*matriz)[i] = (char *)malloc(TAMANHO_MATRIZ * sizeof(char));
+        for (int j = 0; j < TAMANHO_MATRIZ; j++) {
+            (*matriz)[i][j] = ' ';
+        }
+    }
+}
+
+void imprimirMatriz(char **matriz) {
+    for (int i = 0; i < TAMANHO_MATRIZ; i++) {
+        for (int j = 0; j < TAMANHO_MATRIZ; j++) {
+            printf("%c ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int matrizCheia(char **matriz) {
+    for (int i = 0; i < TAMANHO_MATRIZ; i++) {
+        for (int j = 0; j < TAMANHO_MATRIZ; j++) {
+            if (matriz[i][j] == ' ') {
+                return 0; // A matriz ainda não está cheia
+            }
+        }
+    }
+    return 1; // A matriz está cheia
+}
+
+int pode(char **matriz, int x, int y) {
+    if (x > 0 && matriz[x - 1][y] != ' ')
+        return 1; // Acima
+    if (x < TAMANHO_MATRIZ - 1 && matriz[x + 1][y] != ' ')
+        return 1; // Abaixo
+    if (y > 0 && matriz[x][y - 1] != ' ')
+        return 1; // À esquerda
+    if (y < TAMANHO_MATRIZ - 1 && matriz[x][y + 1] != ' ')
+        return 1; // À direita
+    return 0; // Nenhuma posição adjacente preenchida
+}
 
 int main() {
-    char **JOGO;
-    int F, F2;
-    JOGO = (char **) malloc (11 * sizeof(char*));
-    for (F=0; F<11; F++)
-    JOGO[F]= (char *) malloc (11 * sizeof(char));
+    char **matriz;
+    inicializarMatriz(&matriz);
     
-    for(F=0; F<11; F++)
-    {
-        for (F2=0; F2<11; F2++)
-        {
-            printf("[%c] ", JOGO[F][F]);}
-    printf("\n");}
+    matriz[1][1] = 'A';
+    
+    imprimirMatriz(matriz);
 
-    return 0;
+    while (!matrizCheia(matriz)) {
+        int x, y;
+        printf("Escolha uma posição adjacente (linha e coluna) para colocar a próxima peça 'B' (1 a 3): ");
+        scanf("%d %d", &x, &y);
+
+        if (x >= 1 && x <= 3 && y >= 1 && y <= 3 && matriz[x - 1][y - 1] == ' ' && pode(matriz, x, y)==1)
+        {
+        if (pode(matriz, x - 1, y) || pode(matriz, x + 1, y) || pode(matriz, x, y - 1) || pode(matriz, x, y + 1)) 
+        {
+            matriz[x - 1][y - 1] = 'B';
+            printf("Peça 'B' colocada com sucesso.\n");
+            imprimirMatriz(matriz);
+        } 
+        else {
+            printf("Posição inválida. Tente novamente.\n");
+        }
+    }
+        
+    }
+    
 }
