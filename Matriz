@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TAMANHO_MATRIZ 3
+#define TAMANHO_MATRIZ 11
 
 void inicializarMatriz(char ***matriz) {
     *matriz = (char **)malloc(TAMANHO_MATRIZ * sizeof(char *));
@@ -14,9 +14,16 @@ void inicializarMatriz(char ***matriz) {
 }
 
 void imprimirMatriz(char **matriz) {
+    system("cls");
+    printf("     1   2   3   4   5   6   7   8   9   10  11\n");
+
     for (int i = 0; i < TAMANHO_MATRIZ; i++) {
+        if (i<9)
+        printf("%d   ", i+1);
+        else
+        printf("%d  ",i+1);
         for (int j = 0; j < TAMANHO_MATRIZ; j++) {
-            printf("%c ", matriz[i][j]);
+            printf("[%2c]", matriz[i][j]);
         }
         printf("\n");
     }
@@ -49,19 +56,16 @@ int main() {
     char **matriz;
     inicializarMatriz(&matriz);
     
-    matriz[1][1] = 'A';
+    matriz[5][5] = 'A';
     
     imprimirMatriz(matriz);
 
     while (!matrizCheia(matriz)) {
         int x, y;
-        printf("Escolha uma posição adjacente (linha e coluna) para colocar a próxima peça 'B' (1 a 3): ");
+        printf("Escolha uma posição adjacente (linha e coluna) para colocar a próxima peça 'B' (1 a 11): ");
         scanf("%d %d", &x, &y);
 
-        if (x >= 1 && x <= 3 && y >= 1 && y <= 3 && matriz[x - 1][y - 1] == ' ' && pode(matriz, x, y)==1)
-        {
-        if (pode(matriz, x - 1, y) || pode(matriz, x + 1, y) || pode(matriz, x, y - 1) || pode(matriz, x, y + 1)) 
-        {
+        if (x >= 1 && x <= 11 && y >= 1 && y <= 11 && matriz[x - 1][y - 1] == ' ' && pode(matriz, x, y)==1) {
             matriz[x - 1][y - 1] = 'B';
             printf("Peça 'B' colocada com sucesso.\n");
             imprimirMatriz(matriz);
@@ -70,7 +74,5 @@ int main() {
             printf("Posição inválida. Tente novamente.\n");
         }
     }
-        
-    }
-    
 }
+    
