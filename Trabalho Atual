@@ -17,33 +17,16 @@ void inicializarMatriz(char ***matriz) {
     }
 }
 
-// Função para imprimir a pilha
-void printPilha() {
-    int i;
-    for (i = 0; i <= top; i++) {
-        printf("%c ", Pilha[i]);
-    }
-    printf("\n");
-}
-
-// Função para adicionar um elemento à pilha
-void PilhaPronta(char c) {
-    if (top >= MAX - 1) {
-        printf("Pilha cheia\n");
-    } else {
-        Pilha[++top] = c;
-    }
-}
-
-// Função para embaralhar um array
-void Randomizar(char *array, int n) {
+// Função para embaralhar
+void Randomizar(char *numero, int n) {
+    srand(time(NULL));
     if (n > 1) {
         int i;
         for (i = 0; i < n - 1; i++) {
           int j = i + rand() / (RAND_MAX / (n - i) + 1);
-          char t = array[j];
-          array[j] = array[i];
-          array[i] = t;
+          char t = numero[j];
+          numero[j] = numero[i];
+          numero[i] = t;
         }
     }
 }
@@ -63,12 +46,13 @@ void imprimirMatriz(char **matriz) {
 }
 
 // Tira uma peça do topo da pilha
-char Tirar() {
-    if (top < 0) {
-        printf("Pilha vazia\n");
-        return '\0';
+char Tirar (char *letters, int *proxima) {
+    if (*proxima == -1) {
+        printf("A pilha está vazia.\n");
+        return '\0'; // retorna nulo se a pilha estiver vazia
     } else {
-        return Pilha[top--];
+        (*proxima)--; // decrementa o topo da pilha
+        return letters[*proxima]; // retorna o elemento do topo da pilha
     }
 }
 
@@ -81,6 +65,13 @@ int matrizCheia(char **matriz) {
         }
     }
     return 1; // A matriz está cheia
+}
+
+void PreencherPilha(char *letters) {
+    for (int i = MAX-1; i >= 0; i--) {
+        Pilha[MAX-1-i] = letters[i];
+    }
+    top = MAX - 1;
 }
 
 int pode(char **matriz, int x, int y ) {
@@ -97,39 +88,39 @@ int pode(char **matriz, int x, int y ) {
         return 1; // À direita
     return 0; // Nenhuma posição adjacente preenchida
 }
+
 int main() {
     char letters[MAX];
     int i, j;
     char **matriz;
-    srand(time(NULL));
     // Adiciona 6 de cada letra ao array
     for (i = 0; i < 6; i++) {
         for (j = 0; j < 6; j++) {
-            letters[i*6 + j] = 'A' + i;
+            letters[j*6 + i] = 'A' + i;
         }
     }
-    srand(time(NULL));
     Randomizar(letters, MAX);
-    for (i = 0; i < MAX; i++) {
-        PilhaPronta(letters[i]);
-    }
+    PreencherPilha(letters);
     inicializarMatriz(&matriz);
-
     imprimirMatriz(matriz);
 
     while (!matrizCheia(matriz)) {
-        int x, y;
-        printf("Escolha uma posição adjacente (linha e coluna) para colocar a próxima peça 'B' (1 a 6): ");
+        int x=0, y=0;
+        printf("Escolha uma posicao adjacente (linha e coluna) para colocar a proxima peça 'B' (1 a 6):\n ");
+        printf("A proxima peca eh: %c\n", letters[top-1]);
+
+    while (x < 1 || x > 6 && y < 1 || y > 6)
         scanf("%d %d", &x, &y);
 
         if (x >= 1 && x <= 7 && y >= 1 && y <= 7 && matriz[x][y] == ' ' && pode(matriz, x, y)==1) {
-            matriz[x][y] = Tirar();
+            matriz[x][y] = Tirar(letters, &top);
             printf("Peça 'B' colocada com sucesso.\n");
             imprimirMatriz(matriz);
-            printPilha();
         }
         else {
-            printf("Posição inválida. Tente novamente.\n");
+            imprimirMatriz(matriz);
+            printf("Posicao invalida. Tente novamente.\n");
+
         }
     }
 }
