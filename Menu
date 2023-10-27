@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <unistd.h>
+
+void passarCreditos(){
+    printf("\033[38;2;128;0;128m");
+    printf("Creditos:\n");
+    sleep(2);
+    printf("\033[38;2;255;0;0m");
+    printf("Programadores:\n");
+    sleep(2);
+    printf("Jose William\n");
+    sleep(2);
+    printf("Selso\n");
+    sleep(2);  
+    printf("\033[38;2;255;165;0m");
+    printf("Criador:\n");
+    sleep(2);
+    printf("Roberto Hugo\n");
+    sleep(6);
+    system("clear");
+}
+
+int main() {
+    int Jogador = 0;
+    system("clear"); // Limpa a tela
+    while (Jogador != 3) {
+        printf("\033[38;2;255;255;0m"); // Define a cor do texto como amarelo RGB
+        printf(" ______              _       _     _       \n");
+        printf("(_____ \\            (_)     (_)   | |      \n");
+        printf(" _____) )_____  ____ _  ____ _  __| |_____ \n");
+        printf("|  __  /| ___ |/ _  | |/ ___) |/ _  (____ |\n");
+        printf("| |  \\ \\| ____( (_| | ( (___| ( (_| / ___ |\n");
+        printf("|_|   |_|_____)\___  |_| \____)_|\_____\\_____|\n");
+        printf("              (_____|                       \n");
+        printf("\033[0m"); // Reseta as cores para o padrão do terminal
+        printf("\033[38;2;255;165;0m");
+        printf("\nJogar = 1\n");
+        printf("Creditos = 2\n");
+        printf("Sair = 3\n");
+        scanf("%d", &Jogador);
+        system("clear"); // Limpa a tela
+        printf("\033[0m");
+
+    if (Jogador == 1){
+    int Modos=0;
+        system("clear");
+    while(Modos!=1 && Modos!=2 && Modos!=3){
+        printf("Modos:\n");
+        printf("     Facil = 1\n");
+        printf("     Medio = 2 \n");
+        printf("     Dificil = 3 \n");
+        scanf("%d",&Modos);
+    }
+    break;
+    }
+    else if (Jogador == 2)
+        passarCreditos();
+    else if (Jogador == 3){
+        printf("Que pena!, espero que voce volte.");
+        exit(0);
+    }
+        
+    }
+
+
+
+    return 0;
+}
