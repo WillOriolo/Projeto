@@ -50,13 +50,25 @@ void Randomizar(char *numero, int n) {
     }
 }
 
-void imprimirMatriz(char **matriz) {
+void imprimirMatriz(char **matriz, int fase) {
     system("cls");
-    printf("      1    2    3    4    5    6\n");
+    printf("\033[0;31m"); // Vermelho
+    if(fase==2){
+        printf("                           ================================\n");
+        printf("                             FASE       DE       EXPANSAO\n");
+        printf("                           ================================\n");
+    }
+
+    printf("\033[0m"); // Reset para a cor padrão
+
+    printf("\033[38;2;200;162;200m"); // Lilás
+    printf("                               1    2    3    4    5    6\n");
 
     for (int i = 1; i < TAMANHO_MATRIZ-1; i++) {
+        printf("\033[38;2;200;162;200m"); // Lilás
+        printf("                           ");
         if (i<9)
-        printf("%d   ", i);
+        printf("%d ", i);
         for (int j = 1; j < TAMANHO_MATRIZ-1; j++) {
             switch(matriz[i][j]) {
                 case 'A':
@@ -86,6 +98,7 @@ void imprimirMatriz(char **matriz) {
         printf("\n\n");
     }
 }
+
 
 // Tira uma peça do topo da pilha
 char Tirar (char *letters, int *proxima) {
@@ -190,7 +203,7 @@ int main() {
     }
 
     char letters[MAX];
-    int i, j;
+    int i, fase=2, j;
     char **matriz;
     // Adiciona 6 de cada letra ao array
     for (i = 0; i < 6; i++) {
@@ -201,30 +214,43 @@ int main() {
     Randomizar(letters, MAX);
     PreencherPilha(letters);
     inicializarMatriz(&matriz);
-    imprimirMatriz(matriz);
-
+    imprimirMatriz(matriz,fase);
+    printf("\033[0;33m"); // Amarelo
+    printf("Escolha uma posicao adjacente (linha e coluna) para colocar a proxima peça 'B' (1 a 6):\n");
+    printf("\033[0m"); // Reset para a cor padrão
     while (!matrizCheia(matriz)) {
         int x=0, y=0;
-        printf("Escolha uma posicao adjacente (linha e coluna) para colocar a proxima peça 'B' (1 a 6):\n ");
-        printf("A proxima peca eh: %c\n", letters[top-1]);
+        printf("\033[0;34m"); // Azul
+        printf("                                  ===================\n");
+        printf("                                     PROXIMA FICHA\n");
+        printf("                                  ===================\n");
+        printf("\033[0m"); // Reset para a cor padrão
+        printf("\033[0;35m"); // Magenta
+        printf("                                  >>>>>>> |%c| <<<<<<<\n", letters[top-1]);
+        printf("\033[0m"); // Reset para a cor padrão
+
 
     while (x < 1 || x > 6 && y < 1 || y > 6)
-        scanf("%d %d", &x, &y);
-
-        if (x >= 1 && x <= 7 && y >= 1 && y <= 7 && matriz[x][y] == ' ' && pode(matriz, x, y)==1) {
+        if (scanf("%d %d", &x, &y) != 2) {
+        // Limpa o buffer de entrada se a entrada for inválida
+        while (getchar() != '\n');{
+        x = 0;
+        y = 0;
+    }
+}
+        if (x >= 1 && x < 7 && y >= 1 && y < 7 && matriz[x][y] == ' ' && pode(matriz, x, y)==1) {
             matriz[x][y] = Tirar(letters, &top);
-            printf("Peça 'B' colocada com sucesso.\n");
-            imprimirMatriz(matriz);
+            imprimirMatriz(matriz, fase);
         }
         else {
-            imprimirMatriz(matriz);
+            imprimirMatriz(matriz, fase);
             printf("Posicao invalida. Tente novamente.\n");
 
         }
     }
 
 while (1){
-imprimirMatriz(matriz);
+imprimirMatriz(matriz,fase);
 int x1, y1, x2, y2;
 printf("Insira as coordenadas da primeira peça (x y): ");
 scanf("%d %d", &x1, &y1);
@@ -233,4 +259,3 @@ scanf("%d %d", &x2, &y2);
 trocarPecas(matriz, x1, y1, x2, y2);
 }
 }
-
