@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #define TAMANHO_MATRIZ 8
 #define MAX 36 // Tamanho máximo da pilha
+#define MATRIZ4X4 4
 
 char Pilha[MAX]; // Pilha
 int top = -1; // Topo da pilha
@@ -9,12 +11,12 @@ int PRIMEIRA_PECA=1;
 
 void passarCreditos(){
     printf("\033[38;2;128;0;128m");
-    printf("Creditos:\n");
+    printf("Créditos:\n");
     sleep(2);
     printf("\033[38;2;255;0;0m");
     printf("Programadores:\n");
     sleep(2);
-    printf("Jose William\n");
+    printf("José William\n");
     sleep(2);
     printf("Selso\n");
     sleep(2);
@@ -54,11 +56,16 @@ void imprimirMatriz(char **matriz, int fase, char *letras, int* pecaA, int* peca
     printf("\033[0m"); // Reset para a cor padrão após imprimir cada peça
     system("cls");
     printf("\033[0;31m"); // Vermelho
+    if (fase==3){
+        printf("                           ===============================\n");
+        printf("                                       INTRIGA\n");
+        printf("                           ===============================\n");
+    }
     if(fase==2){
         printf("                           ================================\n");
-        printf("                             FASE       DE       EXPANSAO\n");
-        printf("                           ================================\n");
-    }
+        printf("                             FASE       DE       EXPANSÃO\n");
+        printf("                           ================================\n");}
+
 
     printf("\033[0m"); // Reset para a cor padrão
 
@@ -198,6 +205,14 @@ int pode(char **matriz, int x, int y ) {
     return 0; // Nenhuma posição adjacente preenchida
 }
 
+/*char TRANCADESGRACA(){
+int Atranca=0, Btranca=0, Ctranca=0, Dtranca=0, Etranca=0, Ftranca=0;
+printf("QUAL FICHA VOCE VAI TRANCAR?")
+scanf("%c",)
+
+}*/
+
+
 void trocarPecas(char **matriz, int x1, int y1, int x2, int y2) {
     // Verifica se as peças estão adjacentes
     if ((abs(x1 - x2) == 1 && y1 == y2) || (abs(y1 - y2) == 1 && x1 == x2)) {
@@ -264,6 +279,7 @@ void FichasReveladas(int num, char *letras, int* pecaA, int* pecaB, int* pecaC, 
 }
 
 int main() {
+    setlocale(LC_ALL, "Portuguese");
         int Jogador = 0, Modos;
    while (Jogador!= 1){
     system("cls"); // Limpa a tela
@@ -278,7 +294,7 @@ int main() {
         printf("\033[0m"); // Reseta
         printf("\033[38;2;255;165;0m");
         printf("\nJogar = 1\n");
-        printf("Creditos = 2\n");
+        printf("Créditos = 2\n");
         printf("Sair = 3\n");
         scanf("%d", &Jogador);
         system("cls"); // Limpa a tela
@@ -292,16 +308,16 @@ int main() {
         system("cls");
     }
     else if (Jogador == 3){
-        printf("Que pena!, espero que voce volte.");
+        printf("Que pena! Espero que você volte!");
         exit(0);
     }}
     int TENTANDO=0;
     while(TENTANDO!=1 && TENTANDO!=2 && TENTANDO!=3){
         printf("\033[38;2;255;255;0m");
         printf("Modos:\n");
-        printf("     Facil = 1\n");
-        printf("     Medio = 2 \n");
-        printf("     Dificil = 3 \n");
+        printf("     Fácil = 1\n");
+        printf("     Médio = 2 \n");
+        printf("     Difícil = 3 \n");
         scanf("%d",&TENTANDO);
         printf("\033[0m");
         }
@@ -330,21 +346,40 @@ char letra='H';
     printf("Insira o número da ficha que você deseja revelar:\n");
 
     Randomizar(letras, 6);
-
+int fase=1;
 while(TENTANDO-2<G){
         FichasReveladas(num, letras, &PA, &PB, &PC, &PD, &PE, &PF);
         do {
         if(scanf("%d", &num) != 1){
         while (getchar() != '\n');
         }
+        if(num==0)
+        if(PA==1){
+        num=-1;}
+        if(num==1)
+        if(PB==1){
+        num=-1;}
+        if(num==2)
+        if(PC==1){
+        num=-1;}
+        if(num==3)
+        if(PD==1){
+        num=-1;}
+        if(num==4)
+        if(PE==1){
+        num=-1;}
+        if(num==6)
+        if(PF==1){
+        num=-1;}
         } while(num < 0 || num > 6 || num == 5);
         system("cls");
         if(TENTANDO==G)
-        printf("\nEscreva qualquer coisa para passar para a proxima fase\n");
+        printf("\nEscreva outra ficha para passar para a próxima fase\n");
         TENTANDO++;
     }
     char letters[MAX];
-    int i, fase=2, j;
+    int i, j;
+    fase=2;
     char **matriz;
     // Adiciona 6 de cada letra ao array
     for (i = 0; i < 6; i++) {
@@ -359,13 +394,13 @@ while(TENTANDO-2<G){
     inicializarMatriz(&matriz);
     imprimirMatriz(matriz,fase,letras, &PA, &PB, &PC, &PD, &PE, &PF);
     printf("\033[0;33m"); // Amarelo
-    printf("Escolha uma posicao adjacente (linha e coluna) para colocar a proxima peça 'B' (1 a 6):\n");
+    printf("Escolha uma posição adjacente (linha e coluna) para colocar a proxima peça 'B' (1 a 6):\n");
     printf("\033[0m"); // Reset para a cor padrão
     while (!matrizCheia(matriz)) {
         int x=0, y=0;
         printf("\033[0;34m"); // Azul
         printf("                                  ===================\n");
-        printf("                                     PROXIMA FICHA\n");
+        printf("                                     PRóXIMA FICHA\n");
         printf("                                  ===================\n");
         printf("\033[0m"); // Reset para a cor padrão
         printf("\033[0;35m"); // Magenta
@@ -391,8 +426,9 @@ while(TENTANDO-2<G){
 
         }
     }
-
-while (1){
+    fase=3;
+i=0, PA=1,PB=1,PC=1,PD=1,PE=1,PF=1;
+while (i!=5){
 imprimirMatriz(matriz,fase,letras, &PA, &PB, &PC, &PD, &PE, &PF);
 int x1, y1, x2, y2;
 printf("Insira as coordenadas da primeira peça (x y): ");
@@ -400,6 +436,46 @@ scanf("%d %d", &x1, &y1);
 printf("Insira as coordenadas da segunda peça (x y): ");
 scanf("%d %d", &x2, &y2);
 trocarPecas(matriz, x1, y1, x2, y2);
+i++;
 }
+imprimirMatriz(matriz,fase,letras, &PA, &PB, &PC, &PD, &PE, &PF);
+int pontoA=0,pontoB=0,pontoC=0,pontoD=0,pontoE=0,pontoF=0;
+for(i=0;i<MATRIZ4X4;i++){
+    for(int j=0;j<MATRIZ4X4;j++){
+    if(matriz[i+2][j+2]=='A')
+    pontoA++;
+    if(matriz[i+2][j+2]=='B')
+    pontoB++;
+    if(matriz[i+2][j+2]=='C')
+    pontoC++;
+    if(matriz[i+2][j+2]=='D')
+    pontoD++;
+    if(matriz[i+2][j+2]=='E')
+    pontoE++;
+    if(matriz[i+2][j+2]=='F')
+    pontoF++;}}
 
+        printf("\n\n");
+        printf("                                         PONTOS\n");
+        printf("                            A     B     C     D     E     F \n");
+        printf("\033[0;31m"); // Vermelho
+        printf("                           [%d]", pontoA);
+        printf("\033[0m"); // Reset para a cor padrão após imprimir cada peça
+        printf("\033[0;32m"); // Verde
+        printf("   [%d]", pontoB);
+        printf("\033[0m"); // Reset para a cor padrão após imprimir cada peça
+        printf("\033[0;33m"); // Amarelo
+        printf("   [%d]", pontoC);
+        printf("\033[0m"); // Reset para a cor padrão após imprimir cada peça
+        printf("\033[0;34m"); // Azul
+        printf("   [%d]", pontoD);
+        printf("\033[0m"); // Reset para a cor padrão após imprimir cada peça
+        printf("\033[0;35m"); // Magenta
+        printf("   [%d]", pontoE);
+        printf("\033[0m"); // Reset para a cor padrão após imprimir cada peça
+        printf("\033[0;36m"); // Ciano
+        printf("   [%d]\n", pontoF);
+        printf("\033[0m"); // Reset para a cor padrão após imprimir cada peça
+
+return 0;
    }
